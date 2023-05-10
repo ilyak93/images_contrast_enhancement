@@ -120,6 +120,18 @@ __device__ void gpu_histogram(uchar* img_in, unsigned int *hist){
 	syncthreads();
 }
 
+//the corrected function I think should be:
+/* __device__ void gpu_histogram(uchar* img_in, unsigned int *hist){
+    int threadId = threadIdx.x;
+    int blockImageStart = blockIdx.x * THREADS_PER_BLOCK;
+    int MaxIndex = blockImageStart + THREADS_PER_BLOCK - 1;
+    for(int i = blockImageStart + threadId; i <= MaxIndex; i+=THREADS_PER_BLOCK){
+        atomicAdd(&(hist[img_in[i]]), 1);
+    }
+    syncthreads();
+}
+*/
+
 __device__ void map(uchar *mapped, unsigned int *cdf, unsigned int cdf_min){
     int threadId = threadIdx.x;
     if(threadId < GREY_SCALE){
