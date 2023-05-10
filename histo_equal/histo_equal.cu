@@ -121,6 +121,9 @@ __device__ void gpu_histogram(uchar* img_in, unsigned int *hist){
 }
 
 //the corrected function I think should be:
+// clarification: the previous implementation restricted to only one threadblock processing the whole image
+// the commented new implemtation isn't restricted to any number of threadblocks and in the case 65536 / 1024 = 64,
+//each thread in each block will process exactly one pixel (will add it to the histogram)
 /* __device__ void gpu_histogram(uchar* img_in, unsigned int *hist){
     int threadId = threadIdx.x;
     int blockImageStart = blockIdx.x * THREADS_PER_BLOCK;
