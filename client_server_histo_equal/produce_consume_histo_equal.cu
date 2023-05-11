@@ -339,6 +339,9 @@ int main(int argc, char *argv[]) {
             CUDA_CHECK(cudaMalloc(&gpu_image_out, SQR(IMG_DIMENSION)));
 
             /* TODO place memcpy's and kernels in a stream */
+	    // the following if seems like a bug because
+	    // for img_idx >= 64, the corresponding memory transfers and kernel launches
+	    // will not be asynchronous and will be executed sequentially on the default stream
             if (img_idx < 64) {
                 streams_queue[avail_idx] = img_idx;
             }
